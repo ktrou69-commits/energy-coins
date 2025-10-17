@@ -451,29 +451,33 @@ class EnergyCoinApp {
         timeline.style.gridTemplateColumns = '';
         timeline.style.justifyContent = '';
         timeline.style.width = '';
+        timeline.classList.remove('mobile-grid-layout');
         
         if (screenWidth <= 479) {
-            // Very small mobile - fixed 35px coins
-            timeline.style.gridTemplateColumns = `repeat(${hoursCount}, 35px)`;
-            timeline.style.justifyContent = 'flex-start';
-            timeline.style.width = 'max-content';
+            // Very small mobile - 4 columns grid
+            timeline.style.gridTemplateColumns = 'repeat(4, 1fr)';
+            timeline.style.width = '100%';
+            timeline.classList.add('mobile-grid-layout');
         } else if (screenWidth <= 768) {
-            // Mobile - fixed 45px coins
-            timeline.style.gridTemplateColumns = `repeat(${hoursCount}, 45px)`;
-            timeline.style.justifyContent = 'flex-start';
-            timeline.style.width = 'max-content';
+            // Mobile - 5 columns grid
+            timeline.style.gridTemplateColumns = 'repeat(5, 1fr)';
+            timeline.style.width = '100%';
+            timeline.classList.add('mobile-grid-layout');
         } else if (screenWidth <= 991) {
-            // Tablet - fixed 55px coins
+            // Tablet - horizontal row
             timeline.style.gridTemplateColumns = `repeat(${hoursCount}, 55px)`;
             timeline.style.justifyContent = 'center';
+            timeline.style.width = 'max-content';
         } else if (screenWidth <= 1199) {
-            // Small desktop - fixed 65px coins
+            // Small desktop - horizontal row
             timeline.style.gridTemplateColumns = `repeat(${hoursCount}, 65px)`;
             timeline.style.justifyContent = 'center';
+            timeline.style.width = 'max-content';
         } else {
             // Large desktop - flexible 1fr columns
             timeline.style.gridTemplateColumns = `repeat(${hoursCount}, 1fr)`;
             timeline.style.justifyContent = 'center';
+            timeline.style.width = '100%';
         }
     }
 

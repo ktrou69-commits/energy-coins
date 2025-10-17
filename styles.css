@@ -1203,6 +1203,11 @@ textarea {
     scrollbar-width: thin;
   }
   
+  /* Disable horizontal scroll for mobile grid */
+  .timeline-container:has(.mobile-grid-layout) {
+    overflow-x: visible;
+  }
+  
   .timeline-container::-webkit-scrollbar {
     height: 4px;
   }
@@ -1575,6 +1580,23 @@ textarea {
 .mobile-timeline .coin {
   scroll-snap-align: center;
   touch-action: manipulation;
+}
+
+/* Mobile grid layout for timeline */
+.mobile-grid-layout {
+  gap: var(--space-sm);
+  justify-items: center;
+  align-items: start;
+  grid-auto-rows: max-content;
+  overflow-x: visible !important;
+}
+
+.mobile-grid-layout .coin {
+  width: 100%;
+  max-width: 70px;
+  aspect-ratio: 1;
+  height: auto;
+  min-width: 50px;
 }
 
 .mobile-modal .modal-content {

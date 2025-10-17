@@ -355,19 +355,32 @@ class EnergyCoinApp {
 
         // Get wake/sleep times from settings
         const settings = window.dataManager.getSettings();
-        const wakeHour = this.timeToHour(settings.sleepEnd); // sleepEnd is wake time
-        const sleepHour = this.timeToHour(settings.sleepStart); // sleepStart is sleep time
+        const wakeHour = parseInt(settings.sleepEnd.split(':')[0]); // sleepEnd is wake time
+        const sleepHour = parseInt(settings.sleepStart.split(':')[0]); // sleepStart is sleep time
 
         timeline.innerHTML = '';
 
-        // Generate active hours array (from wake to sleep)
-        const activeHours = this.getActiveHours(wakeHour, sleepHour);
+        // Generate hours from wake to sleep
+        const activeHours = [];
+        if (sleepHour > wakeHour) {
+            // Same day (e.g., wake at 8, sleep at 22)
+            for (let hour = wakeHour; hour <= sleepHour; hour++) {
+                activeHours.push(hour);
+            }
+        } else {
+            // Next day (e.g., wake at 8, sleep at 2 next day)
+            for (let hour = wakeHour; hour <= 23; hour++) {
+                activeHours.push(hour);
+            }
+            for (let hour = 0; hour <= sleepHour; hour++) {
+                activeHours.push(hour);
+            }
+        }
 
         activeHours.forEach((hour, index) => {
             const coin = document.createElement('div');
             coin.className = 'coin';
             coin.dataset.hour = hour;
-            coin.dataset.index = index; // For positioning
 
             const coinStatus = window.dataManager.getCoinStatus(dateString, hour);
             
@@ -396,7 +409,7 @@ class EnergyCoinApp {
             // Add click handler
             coin.addEventListener('click', () => this.handleCoinClick(hour, coinStatus));
             
-            // Add drag and drop (simplified)
+            // Add drag and drop
             coin.draggable = coinStatus.occupied;
             if (coinStatus.occupied) {
                 coin.addEventListener('dragstart', (e) => this.handleDragStart(e, coinStatus.action));
@@ -407,8 +420,8 @@ class EnergyCoinApp {
             timeline.appendChild(coin);
         });
 
-        // Update timeline grid columns based on active hours count and screen size
-        this.updateTimelineGrid(timeline, activeHours.length);
+        // Set grid columns based on screen size
+        this.setTimelineColumns(timeline, activeHours.length);
 
         // Render legend
         this.renderLegend();
@@ -419,67 +432,24 @@ class EnergyCoinApp {
         return parseInt(timeString.split(':')[0]);
     }
 
-    // Get array of active hours from wake to sleep
-    getActiveHours(wakeHour, sleepHour) {
-        const hours = [];
-        
-        if (sleepHour > wakeHour) {
-            // Same day (e.g., wake at 8, sleep at 23)
-            for (let hour = wakeHour; hour <= sleepHour; hour++) {
-                hours.push(hour);
-            }
-        } else {
-            // Next day (e.g., wake at 8, sleep at 2 next day)
-            // From wake hour to 23
-            for (let hour = wakeHour; hour <= 23; hour++) {
-                hours.push(hour);
-            }
-            // From 0 to sleep hour
-            for (let hour = 0; hour <= sleepHour; hour++) {
-                hours.push(hour);
-            }
-        }
-        
-        return hours;
-    }
-
-    // Update timeline grid based on screen size and number of hours
-    updateTimelineGrid(timeline, hoursCount) {
+    // Set timeline columns based on screen size
+    setTimelineColumns(timeline, hoursCount) {
         const screenWidth = window.innerWidth;
         
-        // Clear any existing styles
-        timeline.style.gridTemplateColumns = '';
-        timeline.style.justifyContent = '';
-        timeline.style.width = '';
-        timeline.classList.remove('mobile-grid-layout');
-        
-        if (screenWidth <= 479) {
-            // Very small mobile - 4 columns grid
-            timeline.style.gridTemplateColumns = 'repeat(4, 1fr)';
+        if (screenWidth <= 768) {
+            // Mobile: grid layout
+            const cols = screenWidth <= 479 ? 4 : 5;
+            timeline.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
             timeline.style.width = '100%';
-            timeline.classList.add('mobile-grid-layout');
-        } else if (screenWidth <= 768) {
-            // Mobile - 5 columns grid
-            timeline.style.gridTemplateColumns = 'repeat(5, 1fr)';
-            timeline.style.width = '100%';
-            timeline.classList.add('mobile-grid-layout');
-        } else if (screenWidth <= 991) {
-            // Tablet - horizontal row
-            timeline.style.gridTemplateColumns = `repeat(${hoursCount}, 55px)`;
-            timeline.style.justifyContent = 'center';
-            timeline.style.width = 'max-content';
-        } else if (screenWidth <= 1199) {
-            // Small desktop - horizontal row
-            timeline.style.gridTemplateColumns = `repeat(${hoursCount}, 65px)`;
-            timeline.style.justifyContent = 'center';
-            timeline.style.width = 'max-content';
+            timeline.classList.add('mobile-grid');
         } else {
-            // Large desktop - flexible 1fr columns
+            // Desktop: horizontal layout
             timeline.style.gridTemplateColumns = `repeat(${hoursCount}, 1fr)`;
-            timeline.style.justifyContent = 'center';
             timeline.style.width = '100%';
+            timeline.classList.remove('mobile-grid');
         }
     }
+
 
     renderLegend() {
         const legend = document.getElementById('legend');
@@ -894,40 +864,8 @@ class EnergyCoinApp {
 
     // Handle mobile layout adjustments
     handleMobileLayout() {
-        const isMobile = window.innerWidth <= 768;
-        const timeline = document.getElementById('timeline');
-        
-        if (timeline) {
-            if (isMobile) {
-                // Add mobile-specific classes
-                timeline.classList.add('mobile-timeline');
-                
-                // Ensure proper scrolling on mobile
-                const container = timeline.parentElement;
-                if (container) {
-                    container.style.overflowX = 'auto';
-                    container.style.webkitOverflowScrolling = 'touch';
-                }
-            } else {
-                timeline.classList.remove('mobile-timeline');
-            }
-            
-            // Update timeline grid for current screen size
-            const coins = timeline.querySelectorAll('.coin');
-            if (coins.length > 0) {
-                this.updateTimelineGrid(timeline, coins.length);
-            }
-        }
-        
-        // Adjust modal behavior for mobile
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach(modal => {
-            if (isMobile) {
-                modal.classList.add('mobile-modal');
-            } else {
-                modal.classList.remove('mobile-modal');
-            }
-        });
+        // Re-render timeline to apply correct layout
+        this.renderTimeline();
     }
 
     // Keyboard shortcuts

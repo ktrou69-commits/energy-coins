@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0a0e1a">
+    <title>24 Энерго-Коина</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo">⚡ 24 Энерго-Коина</h1>
+                <div class="header-controls">
+                    <div class="date-nav">
+                        <button class="btn btn-ghost" id="prevDay">←</button>
+                        <input type="date" id="currentDate" class="date-input">
+                        <button class="btn btn-ghost" id="nextDay">→</button>
+                    </div>
+                    <button class="btn btn-ghost" id="themeToggle">🌙</button>
+                    <button class="btn btn-ghost" id="settingsBtn">⚙️</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard -->
+            <section class="dashboard">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="coinsLeft">16</div>
+                        <div class="stat-label">Осталось коинов</div>
+                        <div class="stat-sublabel">из 16 доступных</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="sleepCountdown">8:30</div>
+                        <div class="stat-label">До сна</div>
+                        <div class="stat-sublabel">часов:минут</div>
+                    </div>
+                    <div class="stat-card energy-card">
+                        <div class="energy-bar">
+                            <div class="energy-fill" id="energyFill"></div>
+                        </div>
+                        <div class="stat-label">Энергия</div>
+                        <div class="stat-sublabel">100% заряд</div>
+                    </div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="timeline-section">
+                    <h2>Таймлайн дня</h2>
+                    <div class="timeline-container">
+                        <div class="timeline" id="timeline">
+                            <!-- Coins will be generated here -->
+                        </div>
+                    </div>
+                    <div class="timeline-legend" id="legend">
+                        <!-- Legend will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Actions List -->
+                <div class="actions-section">
+                    <h2>Действия дня</h2>
+                    <div class="actions-list" id="actionsList">
+                        <!-- Actions will be generated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Section (Hidden by default) -->
+            <section class="analytics hidden" id="analyticsSection">
+                <h2>Аналитика</h2>
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <h3>Сегодня по категориям</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Неделя по категориям</h3>
+                        <canvas id="weekCategoryChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Месяц по категориям</h3>
+                        <canvas id="monthCategoryChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Динамика по дням</h3>
+                        <canvas id="weekChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Пиковые часы</h3>
+                        <canvas id="hoursChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" data-section="dashboard">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Главная</span>
+        </button>
+        <button class="nav-btn" data-section="analytics">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Аналитика</span>
+        </button>
+    </nav>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="addActionBtn">+</button>
+
+    <!-- Action Modal -->
+    <div class="modal" id="actionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Добавить действие</h3>
+                <button class="modal-close" id="closeModal">×</button>
+            </div>
+            <form class="modal-form" id="actionForm">
+                <div class="form-group">
+                    <label for="actionTitle">Название действия</label>
+                    <input type="text" id="actionTitle" placeholder="Работа, Спорт, Обед..." required>
+                    <div class="suggestions" id="titleSuggestions"></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="actionCategory">Категория</label>
+                        <select id="actionCategory">
+                            <option value="work">Работа</option>
+                            <option value="rest">Отдых</option>
+                            <option value="sport">Спорт</option>
+                            <option value="communication">Общение</option>
+                            <option value="learn">Обучение</option>
+                            <option value="entertainment">Развлечения</option>
+                            <option value="tasks">Дела</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="actionPriority">Приоритет</label>
+                        <select id="actionPriority">
+                            <option value="low">Низкий</option>
+                            <option value="medium" selected>Средний</option>
+                            <option value="high">Высокий</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startTime">Начало</label>
+                        <input type="time" id="startTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">Окончание</label>
+                        <input type="time" id="endTime" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="actionNote">Комментарий</label>
+                    <textarea id="actionNote" placeholder="Заметка..." rows="3"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-danger" id="deleteAction" style="display: none;">Удалить</button>
+                    <div class="modal-actions-right">
+                        <button type="button" class="btn btn-ghost" id="cancelAction">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Настройки</h3>
+                <button class="modal-close" id="closeSettings">×</button>
+            </div>
+            <form class="modal-form" id="settingsForm">
+                <div class="form-group">
+                    <h4>Режим сна</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sleepStart">Время сна</label>
+                            <input type="time" id="sleepStart" value="22:30">
+                        </div>
+                        <div class="form-group">
+                            <label for="sleepEnd">Время пробуждения</label>
+                            <input type="time" id="sleepEnd" value="08:30">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h4>Резервное копирование данных</h4>
+                    <div class="backup-controls">
+                        <div class="backup-section">
+                            <h5>Экспорт данных</h5>
+                            <div class="backup-buttons">
+                                <button type="button" class="btn btn-ghost" id="exportJSON">
+                                    📄 Экспорт JSON
+                                </button>
+                                <button type="button" class="btn btn-ghost" id="exportCSV">
+                                    📊 Экспорт CSV
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="backup-section">
+                            <h5>Импорт данных</h5>
+                            <div class="backup-buttons">
+                                <input type="file" id="importJSONFile" accept=".json" style="display: none;">
+                                <button type="button" class="btn btn-ghost" id="importJSON">
+                                    📥 Импорт JSON
+                                </button>
+                                
+                                <input type="file" id="importCSVFile" accept=".csv" style="display: none;">
+                                <button type="button" class="btn btn-ghost" id="importCSV">
+                                    📈 Импорт CSV
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-ghost" id="cancelSettings">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="analytics.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -34,7 +34,8 @@ class DataManager {
             },
             days: {},
             actionHistory: [], // For suggestions
-            tasks: [] // For tasks management
+            tasks: [], // For tasks management
+            links: [] // For links library
         };
     }
 
@@ -705,6 +706,124 @@ class DataManager {
         return this.data.settings;
     }
 
+    // ===== LINKS MANAGEMENT =====
+    
+    // Get all links
+    getLinks() {
+        if (!this.data.links) {
+            this.data.links = [];
+        }
+        return this.data.links;
+    }
+
+    // Get link by ID
+    getLink(linkId) {
+        return this.getLinks().find(link => link.id === linkId);
+    }
+
+    // Add new link
+    addLink(link) {
+        const newLink = {
+            id: Date.now().toString(),
+            created: new Date().toISOString(),
+            updated: new Date().toISOString(),
+            ...link
+        };
+        
+        this.data.links.push(newLink);
+        this.saveData();
+        return newLink;
+    }
+
+    // Update existing link
+    updateLink(linkId, updates) {
+        const linkIndex = this.data.links.findIndex(link => link.id === linkId);
+        if (linkIndex !== -1) {
+            this.data.links[linkIndex] = {
+                ...this.data.links[linkIndex],
+                ...updates,
+                updated: new Date().toISOString()
+            };
+            this.saveData();
+            return this.data.links[linkIndex];
+        }
+        return null;
+    }
+
+    // Delete link
+    deleteLink(linkId) {
+        const linkIndex = this.data.links.findIndex(link => link.id === linkId);
+        if (linkIndex !== -1) {
+            this.data.links.splice(linkIndex, 1);
+            this.saveData();
+            return true;
+        }
+        return false;
+    }
+
+    // Get links by category
+    getLinksByCategory(category) {
+        return this.getLinks().filter(link => link.category === category);
+    }
+
+    // Search links by title or description
+    searchLinks(query) {
+        const searchTerm = query.toLowerCase();
+        return this.getLinks().filter(link => 
+            link.title.toLowerCase().includes(searchTerm) ||
+            (link.description && link.description.toLowerCase().includes(searchTerm)) ||
+            (link.tags && link.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+        );
+    }
+
+    // Get links created in the last week
+    getRecentLinks() {
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        
+        return this.getLinks().filter(link => 
+            new Date(link.created) >= weekAgo
+        );
+    }
+
+    // Create sample links
+    createSampleLinks() {
+        const sampleLinks = [
+            {
+                title: 'Подкаст "Будет сделано!"',
+                url: 'https://podcast.example.com/budet-sdelano',
+                description: 'Отличный подкаст о продуктивности и достижении целей',
+                category: 'podcasts',
+                tags: ['продуктивность', 'мотивация']
+            },
+            {
+                title: 'Lofi Hip Hop Radio',
+                url: 'https://youtube.com/watch?v=jfKfPfyJRdk',
+                description: 'Музыка для концентрации и работы',
+                category: 'music',
+                tags: ['фокус', 'работа', 'музыка']
+            },
+            {
+                title: 'Figma - Design Tool',
+                url: 'https://figma.com',
+                description: 'Инструмент для дизайна интерфейсов',
+                category: 'tools',
+                tags: ['дизайн', 'ui', 'инструменты']
+            },
+            {
+                title: 'Статья о тайм-менеджменте',
+                url: 'https://example.com/time-management',
+                description: 'Полезные советы по управлению временем',
+                category: 'articles',
+                tags: ['время', 'продуктивность']
+            }
+        ];
+
+        sampleLinks.forEach(link => {
+            this.addLink(link);
+        });
+    }
+
     // Export/Import methods
     exportData() {
         return JSON.stringify(this.data, null, 2);
@@ -929,4 +1048,9 @@ if (Object.keys(window.dataManager.data.days).length === 0) {
 // Create sample tasks if no tasks exist
 if (window.dataManager.getTasks().length === 0) {
     window.dataManager.createSampleTasks();
+}
+
+// Create sample links if no links exist
+if (window.dataManager.getLinks().length === 0) {
+    window.dataManager.createSampleLinks();
 }

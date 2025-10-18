@@ -281,6 +281,11 @@ class EnergyCoinApp {
             // Tasks manager is already initialized
         }
         
+        // Initialize links manager (already initialized in links.js)
+        if (window.linksManager) {
+            // Links manager is already initialized
+        }
+        
         // Pre-render all sections in background
         setTimeout(() => {
             // Pre-render analytics charts
@@ -309,6 +314,15 @@ class EnergyCoinApp {
                     console.log('Tasks not ready yet, will render on switch');
                 }
             }
+            
+            // Pre-render links
+            if (window.linksManager) {
+                try {
+                    window.linksManager.render();
+                } catch (e) {
+                    console.log('Links not ready yet, will render on switch');
+                }
+            }
         }, 500); // Small delay to ensure DOM is ready
     }
 
@@ -325,7 +339,7 @@ class EnergyCoinApp {
         });
 
         // Show/hide sections immediately
-        document.querySelectorAll('.dashboard, .analytics, .life, .tasks').forEach(el => {
+        document.querySelectorAll('.dashboard, .analytics, .life, .tasks, .links').forEach(el => {
             el.classList.toggle('hidden', !el.classList.contains(section));
         });
 
@@ -370,6 +384,16 @@ class EnergyCoinApp {
                     const tasksList = document.getElementById('tasksList');
                     if (tasksList && !tasksList.innerHTML.trim()) {
                         window.tasksManager.render();
+                    }
+                }
+                break;
+                
+            case 'links':
+                if (window.linksManager) {
+                    // Check if links list is populated
+                    const linksList = document.getElementById('linksList');
+                    if (linksList && !linksList.innerHTML.trim()) {
+                        window.linksManager.render();
                     }
                 }
                 break;

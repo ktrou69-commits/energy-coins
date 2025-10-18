@@ -283,6 +283,69 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Links Section (Hidden by default) -->
+            <section class="links hidden" id="linksSection">
+                <h2>🔗 Библиотека ссылок</h2>
+                
+                <!-- Links Controls -->
+                <div class="links-controls">
+                    <div class="category-filters">
+                        <button class="category-tab active" data-category="all">Все</button>
+                        <button class="category-tab" data-category="podcasts">Подкасты</button>
+                        <button class="category-tab" data-category="music">Музыка</button>
+                        <button class="category-tab" data-category="videos">Видео</button>
+                        <button class="category-tab" data-category="articles">Статьи</button>
+                        <button class="category-tab" data-category="tools">Инструменты</button>
+                        <button class="category-tab" data-category="other">Другое</button>
+                    </div>
+                    <div class="links-actions">
+                        <select id="linksSortBy" class="sort-select">
+                            <option value="created">По дате добавления</option>
+                            <option value="title">По названию</option>
+                            <option value="category">По категории</option>
+                        </select>
+                        <button class="btn btn-primary" id="addLinkBtn">
+                            ➕ Добавить ссылку
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Links Stats -->
+                <div class="links-stats">
+                    <div class="link-stat">
+                        <div class="stat-value" id="totalLinks">0</div>
+                        <div class="stat-label">Всего ссылок</div>
+                    </div>
+                    <div class="link-stat">
+                        <div class="stat-value" id="categoriesCount">0</div>
+                        <div class="stat-label">Категорий</div>
+                    </div>
+                    <div class="link-stat">
+                        <div class="stat-value" id="recentLinks">0</div>
+                        <div class="stat-label">За неделю</div>
+                    </div>
+                </div>
+
+                <!-- Links Container -->
+                <div class="links-container">
+                    <div class="links-header">
+                        <h3 id="linksTitle">Все ссылки</h3>
+                        <span class="links-count" id="linksCount">0 ссылок</span>
+                    </div>
+                    <div class="links-list" id="linksList">
+                        <!-- Links will be rendered here -->
+                        <div class="empty-state" id="emptyLinks">
+                            <div class="empty-icon">🔗</div>
+                            <h3>Пока нет ссылок</h3>
+                            <p>Добавьте первую ссылку в вашу библиотеку</p>
+                            <button class="btn btn-primary" onclick="window.linksManager.openLinkModal()">
+                                Добавить ссылку
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -303,6 +366,10 @@
         <button class="nav-btn" data-section="life">
             <span class="nav-icon">⏳</span>
             <span class="nav-label">Жизнь</span>
+        </button>
+        <button class="nav-btn" data-section="links">
+            <span class="nav-icon">🔗</span>
+            <span class="nav-label">Ссылки</span>
         </button>
     </nav>
 
@@ -504,11 +571,66 @@
         </div>
     </div>
 
+    <!-- Link Modal -->
+    <div class="modal" id="linkModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="linkModalTitle">Добавить ссылку</h3>
+                <button class="modal-close" id="closeLinkModal">×</button>
+            </div>
+            <form class="modal-form" id="linkForm">
+                <div class="form-group">
+                    <label for="linkTitle">Название</label>
+                    <input type="text" id="linkTitle" class="form-input" placeholder="Название ссылки" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="linkUrl">URL</label>
+                    <input type="url" id="linkUrl" class="form-input" placeholder="https://example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="linkDescription">Описание</label>
+                    <textarea id="linkDescription" class="form-input" rows="3" placeholder="Краткое описание (необязательно)"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="linkCategory">Категория</label>
+                        <select id="linkCategory" class="form-input" required>
+                            <option value="podcasts">🎧 Подкасты</option>
+                            <option value="music">🎵 Музыка</option>
+                            <option value="videos">🎬 Видео</option>
+                            <option value="articles">📰 Статьи</option>
+                            <option value="tools">🛠️ Инструменты</option>
+                            <option value="other">📂 Другое</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="linkTags">Теги</label>
+                    <input type="text" id="linkTags" class="form-input" placeholder="тег1, тег2, тег3">
+                    <small class="form-hint">Разделяйте теги запятыми</small>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-danger" id="deleteLink" style="display: none;">Удалить</button>
+                    <div class="modal-actions-right">
+                        <button type="button" class="btn btn-ghost" id="cancelLink">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="data.js"></script>
     <script src="analytics.js"></script>
     <script src="life.js"></script>
     <script src="tasks.js"></script>
+    <script src="links.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

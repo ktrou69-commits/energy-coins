@@ -1619,3 +1619,388 @@ textarea {
     min-width: 44px;
   }
 }
+
+/* Life Section Styles */
+.life {
+  display: grid;
+  gap: var(--space-xl);
+  max-width: 100%;
+  width: 100%;
+  padding-bottom: 120px; /* Отступ снизу для видимости обратного отсчёта */
+}
+
+.life h2 {
+  margin-bottom: var(--space-lg);
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* Life Settings */
+.life-settings {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.settings-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+}
+
+.settings-card h3 {
+  margin-bottom: var(--space-lg);
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+}
+
+.life-input {
+  width: 100%;
+  padding: var(--space-md);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: border-color 0.2s ease;
+}
+
+.life-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.input-suffix {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-left: var(--space-sm);
+}
+
+/* Life Stats */
+.life-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+}
+
+.life-stat {
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.life-stat:hover {
+  transform: translateY(-4px);
+}
+
+/* Life Controls */
+.life-controls {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+}
+
+.control-group {
+  margin-bottom: var(--space-lg);
+}
+
+.control-group:last-child {
+  margin-bottom: 0;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: var(--space-md);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.scale-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.scale-btn {
+  min-width: 80px;
+}
+
+.scale-btn.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Life Legend */
+.life-legend {
+  display: flex;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.productive-day {
+  background: var(--success);
+}
+
+.unproductive-day {
+  background: var(--danger);
+}
+
+.future-day {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+}
+
+/* Life Visualization */
+.life-visualization {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.visualization-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border);
+}
+
+.visualization-header h3 {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.visualization-info {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Life Grid */
+.life-grid {
+  display: grid;
+  gap: 1px;
+  justify-content: center;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: var(--space-sm);
+}
+
+/* Year view - 80 squares (years) */
+.life-grid.year-view {
+  grid-template-columns: repeat(10, minmax(12px, 22px));
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+/* Month view - показываем все месяцы жизни */
+.life-grid.month-view {
+  grid-template-columns: repeat(24, minmax(12px, 20px));
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+/* Week view - показываем все недели жизни */
+.life-grid.week-view {
+  grid-template-columns: repeat(52, 1fr);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.life-square {
+  width: 12px;
+  height: 12px;
+  border-radius: 1px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.life-square:hover {
+  transform: scale(1.1);
+  z-index: 1;
+}
+
+.life-square.lived-productive {
+  background: var(--success);
+  border-color: var(--success);
+}
+
+.life-square.lived-unproductive {
+  background: var(--danger);
+  border-color: var(--danger);
+}
+
+.life-square.current {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.life-square.future {
+  background: var(--bg-secondary);
+  border: 2px solid var(--border);
+}
+
+/* Countdown Section */
+.countdown-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.countdown-section h3 {
+  margin-bottom: var(--space-lg);
+  color: var(--text-primary);
+  font-size: 1.125rem;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: var(--space-md);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.countdown-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.countdown-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Mobile Responsive */
+@media (max-width: 767px) {
+  .life {
+    padding-bottom: 100px; /* Меньший отступ на мобильных */
+  }
+  
+  .life-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+  
+  .scale-buttons {
+    justify-content: center;
+  }
+  
+  .life-legend {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  .visualization-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+  
+  .life-grid.year-view {
+    grid-template-columns: repeat(8, minmax(10px, 18px));
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .life-grid.month-view {
+    grid-template-columns: repeat(12, minmax(10px, 18px));
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .life-grid.week-view {
+    grid-template-columns: repeat(26, 1fr);
+    width: 100%;
+  }
+  
+  .life-square {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .countdown-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .countdown-value {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .life {
+    padding-bottom: 90px; /* Еще меньший отступ на очень маленьких экранах */
+  }
+  
+  .life-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .life-grid.year-view {
+    grid-template-columns: repeat(6, minmax(8px, 15px));
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .life-grid.month-view {
+    grid-template-columns: repeat(8, minmax(8px, 15px));
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .life-grid.week-view {
+    grid-template-columns: repeat(20, 1fr);
+    width: 100%;
+  }
+  
+  .life-square {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .countdown-value {
+    font-size: 1.25rem;
+  }
+}

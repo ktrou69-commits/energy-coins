@@ -270,7 +270,7 @@ class EnergyCoinApp {
         });
 
         // Show/hide sections
-        document.querySelectorAll('.dashboard, .analytics').forEach(el => {
+        document.querySelectorAll('.dashboard, .analytics, .life').forEach(el => {
             el.classList.toggle('hidden', !el.classList.contains(section));
         });
 
@@ -279,6 +279,11 @@ class EnergyCoinApp {
         // Render analytics if switching to analytics
         if (section === 'analytics' && window.analyticsManager) {
             setTimeout(() => window.analyticsManager.renderAllCharts(), 100);
+        }
+        
+        // Render life visualization if switching to life
+        if (section === 'life' && window.lifeManager) {
+            setTimeout(() => window.lifeManager.renderLifeVisualization(), 100);
         }
     }
 

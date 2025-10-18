@@ -103,6 +103,119 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Life Section (Hidden by default) -->
+            <section class="life hidden" id="lifeSection">
+                <h2>⏳ Визуализация жизни</h2>
+                
+                <!-- Life Settings -->
+                <div class="life-settings">
+                    <div class="settings-card">
+                        <h3>Настройки жизни</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="birthDate">Дата рождения</label>
+                                <input type="date" id="birthDate" class="life-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="lifeExpectancy">Ожидаемая продолжительность жизни</label>
+                                <input type="number" id="lifeExpectancy" value="80" min="1" max="120" class="life-input">
+                                <span class="input-suffix">лет</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="updateLifeData">Обновить визуализацию</button>
+                    </div>
+                </div>
+
+                <!-- Life Stats -->
+                <div class="life-stats">
+                    <div class="stat-card life-stat">
+                        <div class="stat-value" id="daysLived">0</div>
+                        <div class="stat-label">Дней прожито</div>
+                        <div class="stat-sublabel" id="livedPercentage">0% жизни</div>
+                    </div>
+                    <div class="stat-card life-stat">
+                        <div class="stat-value" id="daysRemaining">0</div>
+                        <div class="stat-label">Дней осталось</div>
+                        <div class="stat-sublabel" id="remainingPercentage">0% жизни</div>
+                    </div>
+                    <div class="stat-card life-stat">
+                        <div class="stat-value" id="coinsRemaining">0</div>
+                        <div class="stat-label">Коинов осталось</div>
+                        <div class="stat-sublabel">бодрствующих часов</div>
+                    </div>
+                    <div class="stat-card life-stat">
+                        <div class="stat-value" id="productiveDays">0</div>
+                        <div class="stat-label">Продуктивных дней</div>
+                        <div class="stat-sublabel" id="productivePercentage">0% от прожитых</div>
+                    </div>
+                </div>
+
+                <!-- Life Visualization Controls -->
+                <div class="life-controls">
+                    <div class="control-group">
+                        <label>Масштаб отображения:</label>
+                        <div class="scale-buttons">
+                            <button class="btn btn-ghost scale-btn active" data-scale="year">Годы</button>
+                            <button class="btn btn-ghost scale-btn" data-scale="month">Месяцы</button>
+                            <button class="btn btn-ghost scale-btn" data-scale="week">Недели</button>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>Легенда:</label>
+                        <div class="life-legend">
+                            <div class="legend-item">
+                                <div class="legend-color productive-day"></div>
+                                <span>Продуктивный период</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color unproductive-day"></div>
+                                <span>Непродуктивный период</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color future-day"></div>
+                                <span>Будущие периоды</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Life Visualization -->
+                <div class="life-visualization">
+                    <div class="visualization-header">
+                        <h3 id="visualizationTitle">Визуализация по годам</h3>
+                        <div class="visualization-info">
+                            <span id="visualizationPeriod">1945 - 2025</span>
+                        </div>
+                    </div>
+                    <div class="life-grid" id="lifeGrid">
+                        <!-- Life squares will be generated here -->
+                    </div>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="countdown-section">
+                    <h3>⏰ Обратный отсчёт</h3>
+                    <div class="countdown-grid">
+                        <div class="countdown-item">
+                            <div class="countdown-value" id="yearsLeft">0</div>
+                            <div class="countdown-label">лет</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value" id="monthsLeft">0</div>
+                            <div class="countdown-label">месяцев</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value" id="daysLeft">0</div>
+                            <div class="countdown-label">дней</div>
+                        </div>
+                        <div class="countdown-item">
+                            <div class="countdown-value" id="hoursLeft">0</div>
+                            <div class="countdown-label">часов</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -115,6 +228,10 @@
         <button class="nav-btn" data-section="analytics">
             <span class="nav-icon">📊</span>
             <span class="nav-label">Аналитика</span>
+        </button>
+        <button class="nav-btn" data-section="life">
+            <span class="nav-icon">⏳</span>
+            <span class="nav-label">Жизнь</span>
         </button>
     </nav>
 
@@ -251,6 +368,7 @@
     <!-- Scripts -->
     <script src="data.js"></script>
     <script src="analytics.js"></script>
+    <script src="life.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

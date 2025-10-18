@@ -33,7 +33,8 @@ class DataManager {
                 }
             },
             days: {},
-            actionHistory: [] // For suggestions
+            actionHistory: [], // For suggestions
+            tasks: [] // For tasks management
         };
     }
 
@@ -716,12 +717,130 @@ class DataManager {
             this.saveData();
             return true;
         } catch (error) {
-            console.error('Error importing data:', error);
             return false;
         }
     }
 
-    // Sample data for demo
+    // ===== TASKS MANAGEMENT =====
+    
+    // Get all tasks
+    getTasks() {
+        if (!this.data.tasks) {
+            this.data.tasks = [];
+        }
+        return this.data.tasks;
+    }
+
+    // Get task by ID
+    getTask(taskId) {
+        return this.getTasks().find(task => task.id === taskId);
+    }
+
+    // Add new task
+    addTask(task) {
+        if (!this.data.tasks) {
+            this.data.tasks = [];
+        }
+        
+        task.id = task.id || this.generateId();
+        task.created = task.created || new Date().toISOString();
+        task.updated = task.updated || new Date().toISOString();
+        
+        this.data.tasks.push(task);
+        this.saveData();
+        return task;
+    }
+
+    // Update existing task
+    updateTask(taskId, updates) {
+        const taskIndex = this.getTasks().findIndex(task => task.id === taskId);
+        if (taskIndex !== -1) {
+            this.data.tasks[taskIndex] = {
+                ...this.data.tasks[taskIndex],
+                ...updates,
+                updated: new Date().toISOString()
+            };
+            this.saveData();
+            return this.data.tasks[taskIndex];
+        }
+        return null;
+    }
+
+    // Delete task
+    deleteTask(taskId) {
+        const taskIndex = this.getTasks().findIndex(task => task.id === taskId);
+        if (taskIndex !== -1) {
+            const deletedTask = this.data.tasks.splice(taskIndex, 1)[0];
+            this.saveData();
+            return deletedTask;
+        }
+        return null;
+    }
+
+    // Get tasks by period
+    getTasksByPeriod(period) {
+        return this.getTasks().filter(task => task.period === period);
+    }
+
+    // Get tasks by status
+    getTasksByStatus(status) {
+        return this.getTasks().filter(task => task.status === status);
+    }
+
+    // Create sample tasks
+    createSampleTasks() {
+        const sampleTasks = [
+            {
+                title: 'Завершить отчет по проекту',
+                description: 'Подготовить финальный отчет по проекту для руководства',
+                priority: 'high',
+                status: 'in_progress',
+                period: 'day',
+                deadline: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+                tags: ['работа', 'важное']
+            },
+            {
+                title: 'Позвонить врачу',
+                description: 'Записаться на прием к терапевту',
+                priority: 'medium',
+                status: 'pending',
+                period: 'day',
+                deadline: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                tags: ['здоровье']
+            },
+            {
+                title: 'Изучить новую технологию',
+                description: 'Изучить основы React Native для мобильной разработки',
+                priority: 'medium',
+                status: 'pending',
+                period: 'week',
+                tags: ['обучение', 'программирование']
+            },
+            {
+                title: 'Организовать встречу с командой',
+                description: 'Запланировать еженедельную встречу с командой разработки',
+                priority: 'high',
+                status: 'pending',
+                period: 'week',
+                deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+                tags: ['работа', 'команда']
+            },
+            {
+                title: 'Купить продукты',
+                description: 'Составить список и купить продукты на неделю',
+                priority: 'low',
+                status: 'completed',
+                period: 'day',
+                tags: ['дом', 'покупки']
+            }
+        ];
+
+        sampleTasks.forEach(task => {
+            this.addTask(task);
+        });
+    }
+
+    // Create sample data for demonstration
     createSampleData() {
         const today = new Date();
         const todayString = this.formatDate(today);
@@ -805,4 +924,9 @@ window.dataManager = new DataManager();
 // Create sample data if no data exists
 if (Object.keys(window.dataManager.data.days).length === 0) {
     window.dataManager.createSampleData();
+}
+
+// Create sample tasks if no tasks exist
+if (window.dataManager.getTasks().length === 0) {
+    window.dataManager.createSampleTasks();
 }

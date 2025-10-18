@@ -216,6 +216,73 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Tasks Section (Hidden by default) -->
+            <section class="tasks hidden" id="tasksSection">
+                <h2>✅ Основные задачи</h2>
+                
+                <!-- Tasks Controls -->
+                <div class="tasks-controls">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-period="day">День</button>
+                        <button class="filter-tab" data-period="week">Неделя</button>
+                    </div>
+                    <button class="btn btn-primary" id="addTaskBtn">
+                        <span>+ Добавить задачу</span>
+                    </button>
+                </div>
+
+                <!-- Tasks Stats -->
+                <div class="tasks-stats">
+                    <div class="stat-card task-stat">
+                        <div class="stat-value" id="totalTasks">0</div>
+                        <div class="stat-label">Всего задач</div>
+                        <div class="stat-sublabel" id="tasksFilterLabel">на день</div>
+                    </div>
+                    <div class="stat-card task-stat">
+                        <div class="stat-value" id="completedTasks">0</div>
+                        <div class="stat-label">Выполнено</div>
+                        <div class="stat-sublabel" id="completionRate">0%</div>
+                    </div>
+                    <div class="stat-card task-stat">
+                        <div class="stat-value" id="pendingTasks">0</div>
+                        <div class="stat-label">В процессе</div>
+                        <div class="stat-sublabel" id="pendingRate">0%</div>
+                    </div>
+                    <div class="stat-card task-stat">
+                        <div class="stat-value" id="overdueTasks">0</div>
+                        <div class="stat-label">Просрочено</div>
+                        <div class="stat-sublabel" id="overdueRate">0%</div>
+                    </div>
+                </div>
+
+                <!-- Tasks List -->
+                <div class="tasks-container">
+                    <div class="tasks-header">
+                        <h3 id="tasksTitle">Задачи на сегодня</h3>
+                        <div class="tasks-sort">
+                            <select id="tasksSortBy">
+                                <option value="created">По дате создания</option>
+                                <option value="priority">По приоритету</option>
+                                <option value="deadline">По дедлайну</option>
+                                <option value="status">По статусу</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="tasks-list" id="tasksList">
+                        <!-- Tasks will be generated here -->
+                        <div class="empty-state" id="emptyTasks">
+                            <div class="empty-icon">📝</div>
+                            <h3>Пока нет задач</h3>
+                            <p>Добавьте первую задачу, чтобы начать планирование</p>
+                            <button class="btn btn-primary" onclick="document.getElementById('addTaskBtn').click()">
+                                Добавить задачу
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -224,6 +291,10 @@
         <button class="nav-btn active" data-section="dashboard">
             <span class="nav-icon">🏠</span>
             <span class="nav-label">Главная</span>
+        </button>
+        <button class="nav-btn" data-section="tasks">
+            <span class="nav-icon">✅</span>
+            <span class="nav-label">Задачи</span>
         </button>
         <button class="nav-btn" data-section="analytics">
             <span class="nav-icon">📊</span>
@@ -365,10 +436,79 @@
         </div>
     </div>
 
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="taskModalTitle">Добавить задачу</h3>
+                <button class="modal-close" id="closeTaskModal">×</button>
+            </div>
+            <form class="modal-form" id="taskForm">
+                <div class="form-group">
+                    <label for="taskTitle">Название задачи</label>
+                    <input type="text" id="taskTitle" placeholder="Написать отчет, позвонить клиенту..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskDescription">Описание</label>
+                    <textarea id="taskDescription" placeholder="Подробное описание задачи..." rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskPriority">Приоритет</label>
+                        <select id="taskPriority">
+                            <option value="low">🟢 Низкий</option>
+                            <option value="medium" selected>🟡 Средний</option>
+                            <option value="high">🔴 Высокий</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskStatus">Статус</label>
+                        <select id="taskStatus">
+                            <option value="pending" selected>📋 Запланировано</option>
+                            <option value="in_progress">⏳ В процессе</option>
+                            <option value="completed">✅ Выполнено</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskDeadline">Дедлайн</label>
+                        <input type="datetime-local" id="taskDeadline">
+                    </div>
+                    <div class="form-group">
+                        <label for="taskPeriod">Период</label>
+                        <select id="taskPeriod">
+                            <option value="day" selected>День</option>
+                            <option value="week">Неделя</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskTags">Теги</label>
+                    <input type="text" id="taskTags" placeholder="работа, важное, проект (через запятую)">
+                    <small class="form-hint">Разделяйте теги запятыми</small>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-danger" id="deleteTask" style="display: none;">Удалить</button>
+                    <div class="modal-actions-right">
+                        <button type="button" class="btn btn-ghost" id="cancelTask">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="data.js"></script>
     <script src="analytics.js"></script>
     <script src="life.js"></script>
+    <script src="tasks.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

@@ -29,10 +29,8 @@ class EnergyCoinApp {
         });
         this.startTimers();
         
-        // Initialize analytics
-        if (window.analyticsManager) {
-            window.analyticsManager.init();
-        }
+        // Initialize all sections for instant switching
+        this.preloadAllSections();
     }
 
     setupEventListeners() {
@@ -78,9 +76,13 @@ class EnergyCoinApp {
             setTimeout(() => this.hideSuggestions(), 200);
         });
 
-        // Navigation
+        // Navigation with optimized event handling
         document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => this.switchSection(e.target.dataset.section));
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = e.target.closest('.nav-btn').dataset.section;
+                this.switchSection(section);
+            });
         });
 
         // Modal backdrop clicks
@@ -262,28 +264,120 @@ class EnergyCoinApp {
         button.textContent = theme === 'light' ? '🌙' : '☀️';
     }
 
+    // Preload all sections for instant switching
+    preloadAllSections() {
+        // Initialize analytics
+        if (window.analyticsManager) {
+            window.analyticsManager.init();
+        }
+        
+        // Initialize life manager
+        if (window.lifeManager) {
+            window.lifeManager.init();
+        }
+        
+        // Initialize tasks manager (already initialized in tasks.js)
+        if (window.tasksManager) {
+            // Tasks manager is already initialized
+        }
+        
+        // Pre-render all sections in background
+        setTimeout(() => {
+            // Pre-render analytics charts
+            if (window.analyticsManager) {
+                try {
+                    window.analyticsManager.renderAllCharts();
+                } catch (e) {
+                    console.log('Analytics not ready yet, will render on switch');
+                }
+            }
+            
+            // Pre-render life visualization
+            if (window.lifeManager) {
+                try {
+                    window.lifeManager.renderLifeVisualization();
+                } catch (e) {
+                    console.log('Life visualization not ready yet, will render on switch');
+                }
+            }
+            
+            // Pre-render tasks
+            if (window.tasksManager) {
+                try {
+                    window.tasksManager.render();
+                } catch (e) {
+                    console.log('Tasks not ready yet, will render on switch');
+                }
+            }
+        }, 500); // Small delay to ensure DOM is ready
+    }
+
     // Section navigation
     switchSection(section) {
-        // Update navigation
+        // Prevent double-switching
+        if (this.currentSection === section) {
+            return;
+        }
+
+        // Update navigation immediately
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.section === section);
         });
 
-        // Show/hide sections
-        document.querySelectorAll('.dashboard, .analytics, .life').forEach(el => {
+        // Show/hide sections immediately
+        document.querySelectorAll('.dashboard, .analytics, .life, .tasks').forEach(el => {
             el.classList.toggle('hidden', !el.classList.contains(section));
         });
 
         this.currentSection = section;
 
-        // Render analytics if switching to analytics
-        if (section === 'analytics' && window.analyticsManager) {
-            setTimeout(() => window.analyticsManager.renderAllCharts(), 100);
-        }
-        
-        // Render life visualization if switching to life
-        if (section === 'life' && window.lifeManager) {
-            setTimeout(() => window.lifeManager.renderLifeVisualization(), 100);
+        // Ensure content is rendered (fallback if preload failed)
+        this.ensureSectionReady(section);
+    }
+
+    // Ensure section content is ready
+    ensureSectionReady(section) {
+        switch(section) {
+            case 'analytics':
+                if (window.analyticsManager) {
+                    // Check if charts are already rendered, if not render them
+                    const chartElements = document.querySelectorAll('#analyticsSection canvas');
+                    let needsRender = false;
+                    chartElements.forEach(canvas => {
+                        if (!canvas.getContext('2d').getImageData(0, 0, 1, 1).data.some(channel => channel !== 0)) {
+                            needsRender = true;
+                        }
+                    });
+                    if (needsRender) {
+                        window.analyticsManager.renderAllCharts();
+                    }
+                }
+                break;
+                
+            case 'life':
+                if (window.lifeManager) {
+                    // Check if life grid is populated
+                    const lifeGrid = document.getElementById('lifeGrid');
+                    if (lifeGrid && lifeGrid.children.length === 0) {
+                        window.lifeManager.renderLifeVisualization();
+                    }
+                }
+                break;
+                
+            case 'tasks':
+                if (window.tasksManager) {
+                    // Check if tasks list is populated
+                    const tasksList = document.getElementById('tasksList');
+                    if (tasksList && !tasksList.innerHTML.trim()) {
+                        window.tasksManager.render();
+                    }
+                }
+                break;
+                
+            case 'dashboard':
+                // Dashboard is always ready as it's the main section
+                this.render();
+                break;
         }
     }
 

@@ -315,13 +315,21 @@ class TasksManager {
         const tasks = this.getTasks();
         const sortedTasks = this.sortTasks(tasks);
         const tasksList = document.getElementById('tasksList');
-        const emptyState = document.getElementById('emptyTasks');
 
         this.updateStats(tasks);
         this.updateTasksTitle();
 
         if (sortedTasks.length === 0) {
-            tasksList.innerHTML = emptyState.outerHTML;
+            tasksList.innerHTML = `
+                <div class="empty-state" id="emptyTasks">
+                    <div class="empty-icon">📝</div>
+                    <h3>Пока нет задач</h3>
+                    <p>Добавьте первую задачу, чтобы начать планирование</p>
+                    <button class="btn btn-primary" onclick="window.tasksManager.openTaskModal()">
+                        Добавить задачу
+                    </button>
+                </div>
+            `;
         } else {
             tasksList.innerHTML = sortedTasks.map(task => this.renderTaskItem(task)).join('');
         }

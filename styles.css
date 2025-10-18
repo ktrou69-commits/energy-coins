@@ -1712,11 +1712,36 @@ textarea {
   color: var(--text-primary);
   font-size: 0.875rem;
   transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .life-input:focus {
   outline: none;
   border-color: var(--accent);
+}
+
+/* Safari-specific fixes for date inputs */
+.life-input[type="date"] {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
+  min-height: 44px; /* iOS minimum touch target */
+}
+
+.life-input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
 }
 
 .input-suffix {
@@ -1978,6 +2003,16 @@ textarea {
   .life-input {
     padding: var(--space-sm);
     font-size: 0.875rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .life-input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 44px;
+    width: 100%;
+    max-width: 100%;
   }
   
   .life-stats {

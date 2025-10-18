@@ -142,9 +142,9 @@ class LifeManager {
         const livedPercentage = totalDays > 0 ? (daysLived / totalDays) * 100 : 0;
         const remainingPercentage = totalDays > 0 ? (daysRemaining / totalDays) * 100 : 0;
 
-        // Calculate productive days (days with actions)
-        const productiveDays = this.calculateProductiveDays();
-        const productivePercentage = daysLived > 0 ? (productiveDays / daysLived) * 100 : 0;
+        // No need to calculate productive days anymore
+        const productiveDays = 0;
+        const productivePercentage = 0;
 
         // Calculate remaining coins (awake hours)
         const dailyCoins = this.dataManager.getAvailableCoins();
@@ -201,8 +201,8 @@ class LifeManager {
 
         document.getElementById('coinsRemaining').textContent = stats.coinsRemaining.toLocaleString();
 
-        document.getElementById('productiveDays').textContent = stats.productiveDays.toLocaleString();
-        document.getElementById('productivePercentage').textContent = `${stats.productivePercentage.toFixed(1)}% от прожитых`;
+        document.getElementById('productiveDays').textContent = stats.daysLived.toLocaleString();
+        document.getElementById('productivePercentage').textContent = `завершенных дней`;
     }
 
     // Render life visualization
@@ -256,9 +256,8 @@ class LifeManager {
             square.title = `${year} год`;
 
             if (year < currentYear) {
-                // Past year - check if productive
-                const isProductiveYear = this.isProductiveYear(year);
-                square.classList.add(isProductiveYear ? 'lived-productive' : 'lived-unproductive');
+                // Past year
+                square.classList.add('lived');
             } else if (year === currentYear) {
                 square.classList.add('current');
             } else {
@@ -303,8 +302,7 @@ class LifeManager {
                 // Determine square state
                 if (year < currentYear || (year === currentYear && month < currentMonth)) {
                     // Past month
-                    const isProductiveMonth = this.isProductiveMonth(year, month);
-                    square.classList.add(isProductiveMonth ? 'lived-productive' : 'lived-unproductive');
+                    square.classList.add('lived');
                 } else if (year === currentYear && month === currentMonth) {
                     // Current month
                     square.classList.add('current');
@@ -353,8 +351,7 @@ class LifeManager {
             // Determine square state
             if (weekIndex < livedWeeks) {
                 // Past week
-                const isProductiveWeek = this.isProductiveWeekByIndex(weekIndex, birthDate);
-                square.classList.add(isProductiveWeek ? 'lived-productive' : 'lived-unproductive');
+                square.classList.add('lived');
             } else if (weekIndex === livedWeeks) {
                 // Current week
                 square.classList.add('current');

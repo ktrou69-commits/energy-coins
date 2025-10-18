@@ -1040,17 +1040,23 @@ class DataManager {
 // Initialize data manager
 window.dataManager = new DataManager();
 
-// Create sample data if no data exists
-if (Object.keys(window.dataManager.data.days).length === 0) {
-    window.dataManager.createSampleData();
+// TEMPORARY: Clear all data for fresh start (will auto-disable after first run)
+if (!localStorage.getItem('data_cleared_once')) {
+    localStorage.clear();
+    localStorage.setItem('data_cleared_once', 'true');
 }
 
-// Create sample tasks if no tasks exist
-if (window.dataManager.getTasks().length === 0) {
-    window.dataManager.createSampleTasks();
-}
+// Create sample data if no data exists (DISABLED - user wants clean start)
+// if (Object.keys(window.dataManager.data.days).length === 0) {
+//     window.dataManager.createSampleData();
+// }
 
-// Create sample links if no links exist
-if (window.dataManager.getLinks().length === 0) {
-    window.dataManager.createSampleLinks();
-}
+// Create sample tasks if no tasks exist (DISABLED - user wants clean start)
+// if (window.dataManager.getTasks().length === 0) {
+//     window.dataManager.createSampleTasks();
+// }
+
+// Create sample links if no links exist (DISABLED - user wants clean start)
+// if (window.dataManager.getLinks().length === 0) {
+//     window.dataManager.createSampleLinks();
+// }

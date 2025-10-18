@@ -78,6 +78,7 @@ body {
   margin: 0 auto;
   padding: 0 var(--space-md);
   width: 100%;
+  box-sizing: border-box;
 }
 
 /* Header */
@@ -766,6 +767,16 @@ textarea {
 /* Utility Classes */
 .hidden {
   display: none !important;
+}
+
+/* ===== MAIN SECTIONS LAYOUT ===== */
+.dashboard, .analytics, .life, .tasks, .links {
+  display: grid;
+  gap: var(--space-lg);
+  max-width: 100%;
+  width: 100%;
+  padding: var(--space-lg);
+  box-sizing: border-box;
 }
 
 /* Section transitions for instant switching */
@@ -2558,30 +2569,58 @@ textarea {
   display: flex;
   align-items: flex-start;
   padding: var(--space-lg);
-  border-bottom: 1px solid var(--border);
-  transition: all 0.2s ease;
+  margin: var(--space-md);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
 }
 
 .link-item:hover {
-  background: var(--bg-secondary);
+  background: var(--bg-card);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 .link-item:last-child {
-  border-bottom: none;
+  margin-bottom: var(--space-md);
 }
 
 .link-favicon {
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius);
-  margin-right: var(--space-md);
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  margin-right: var(--space-lg);
   flex-shrink: 0;
-  background: var(--bg-secondary);
+  background: var(--bg-card);
+  border: 2px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
+  font-size: 1.25rem;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.link-item:hover .link-favicon {
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.link-favicon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.link-favicon span {
+  font-size: inherit;
 }
 
 .link-content {
@@ -2590,10 +2629,17 @@ textarea {
 }
 
 .link-title {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1.125rem;
   color: var(--text-primary);
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
   text-decoration: none;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .link-title:hover {
@@ -2602,35 +2648,50 @@ textarea {
 
 .link-url {
   color: var(--text-muted);
-  font-size: 0.875rem;
-  margin-bottom: var(--space-xs);
-  word-break: break-all;
+  font-size: 0.8rem;
+  margin-bottom: var(--space-sm);
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  background: rgba(59, 130, 246, 0.1);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .link-description {
   color: var(--text-secondary);
-  font-size: 0.875rem;
-  margin-bottom: var(--space-sm);
-  line-height: 1.4;
+  font-size: 0.9rem;
+  margin-bottom: var(--space-lg);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .link-meta {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   flex-wrap: wrap;
+  margin-top: auto;
 }
 
 .link-category {
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-card);
+  border: 2px solid;
+  border-radius: var(--radius-lg);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
 }
 
 .link-category.podcasts { border-color: #ff6b6b; color: #ff6b6b; }
@@ -2649,40 +2710,60 @@ textarea {
   display: flex;
   gap: var(--space-xs);
   flex-wrap: wrap;
-  margin-top: var(--space-xs);
+  margin-top: var(--space-sm);
 }
 
 .link-tag {
   padding: var(--space-xs) var(--space-sm);
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), #2563eb);
   color: white;
-  border-radius: var(--radius);
-  font-size: 0.75rem;
-  font-weight: 500;
+  border-radius: var(--radius-lg);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.link-tag:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow);
 }
 
 .link-actions {
   display: flex;
   gap: var(--space-sm);
-  margin-left: var(--space-md);
+  margin-left: var(--space-lg);
   flex-shrink: 0;
+  align-self: flex-start;
 }
 
 .link-action {
-  padding: var(--space-xs);
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
 }
 
 .link-action:hover {
-  background: var(--bg-secondary);
+  background: var(--accent);
   border-color: var(--accent);
-  color: var(--accent);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.link-action:active {
+  transform: translateY(0);
 }
 
 /* Mobile Responsive for Links */
@@ -2719,13 +2800,18 @@ textarea {
   
   .link-item {
     flex-direction: column;
-    gap: var(--space-sm);
+    gap: var(--space-md);
+    margin: var(--space-sm);
+    padding: var(--space-md);
   }
   
   .link-favicon {
-    align-self: flex-start;
+    align-self: center;
     margin-right: 0;
-    margin-bottom: var(--space-xs);
+    margin-bottom: var(--space-sm);
+    width: 48px;
+    height: 48px;
+    font-size: 1.5rem;
   }
   
   .link-actions {

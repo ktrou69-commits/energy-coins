@@ -347,6 +347,12 @@ class EnergyCoinApp {
         if (this.currentSection === section) {
             return;
         }
+        
+        // Prevent timer access on mobile devices
+        if (section === 'timer' && window.innerWidth <= 768) {
+            console.log('Timer is not available on mobile devices');
+            return;
+        }
 
         // Update navigation immediately
         document.querySelectorAll('.nav-btn').forEach(btn => {

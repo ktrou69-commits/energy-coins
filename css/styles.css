@@ -253,6 +253,70 @@ body {
   width: 100%;
 }
 
+/* Daily Quote */
+.quote-section {
+  margin: var(--space-xl) 0;
+}
+
+.quote-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.quote-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.quote-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.quote-content {
+  flex: 1;
+}
+
+.quote-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  font-style: italic;
+  margin-bottom: var(--space-sm);
+}
+
+.quote-author {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.quote-refresh {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+.quote-refresh:hover {
+  opacity: 1;
+  background: var(--bg-secondary);
+  transform: rotate(180deg);
+}
+
 /* Timeline */
 .timeline-section {
   background: var(--bg-card);
@@ -1304,6 +1368,25 @@ textarea {
   .timeline-section,
   .actions-section {
     padding: var(--space-md);
+  }
+  
+  .quote-card {
+    padding: var(--space-md);
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-sm);
+  }
+  
+  .quote-text {
+    font-size: 0.9rem;
+  }
+  
+  .quote-author {
+    font-size: 0.8rem;
+  }
+  
+  .quote-refresh {
+    align-self: center;
   }
   
   .timeline-section h2,

@@ -1035,6 +1035,259 @@ class DataManager {
             this.saveAction(todayString, action);
         });
     }
+
+    // ===== LINKS MANAGEMENT =====
+    
+    // Get all links
+    getLinks() {
+        if (!this.data.links) {
+            this.data.links = [];
+        }
+        return this.data.links;
+    }
+
+    // Get link by ID
+    getLink(linkId) {
+        const links = this.getLinks();
+        return links.find(link => link.id === linkId);
+    }
+
+    // Add new link
+    addLink(linkData) {
+        const links = this.getLinks();
+        const newLink = {
+            id: this.generateId(),
+            ...linkData,
+            created: new Date().toISOString(),
+            updated: new Date().toISOString()
+        };
+        
+        links.push(newLink);
+        this.saveData();
+        return newLink;
+    }
+
+    // Update existing link
+    updateLink(linkId, updateData) {
+        const links = this.getLinks();
+        const linkIndex = links.findIndex(link => link.id === linkId);
+        
+        if (linkIndex !== -1) {
+            links[linkIndex] = {
+                ...links[linkIndex],
+                ...updateData,
+                updated: new Date().toISOString()
+            };
+            this.saveData();
+            return links[linkIndex];
+        }
+        return null;
+    }
+
+    // Delete link
+    deleteLink(linkId) {
+        const links = this.getLinks();
+        const linkIndex = links.findIndex(link => link.id === linkId);
+        
+        if (linkIndex !== -1) {
+            const deletedLink = links.splice(linkIndex, 1)[0];
+            this.saveData();
+            return deletedLink;
+        }
+        return null;
+    }
+
+    // Get links by category
+    getLinksByCategory(category) {
+        const links = this.getLinks();
+        if (category === 'all') {
+            return links;
+        }
+        return links.filter(link => link.category === category);
+    }
+
+    // Search links
+    searchLinks(query) {
+        const links = this.getLinks();
+        const lowerQuery = query.toLowerCase();
+        
+        return links.filter(link => 
+            link.title.toLowerCase().includes(lowerQuery) ||
+            link.description.toLowerCase().includes(lowerQuery) ||
+            (link.tags && link.tags.some(tag => tag.toLowerCase().includes(lowerQuery)))
+        );
+    }
+
+    // Get recent links (last 7 days)
+    getRecentLinks() {
+        const links = this.getLinks();
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        
+        return links.filter(link => new Date(link.created) > weekAgo);
+    }
+
+    // Create sample links
+    createSampleLinks() {
+        const sampleLinks = [
+            {
+                title: 'YouTube',
+                url: 'https://youtube.com',
+                description: 'Видеохостинг для обучения и развлечений',
+                category: 'videos',
+                tags: ['видео', 'обучение', 'развлечения']
+            },
+            {
+                title: 'Spotify',
+                url: 'https://spotify.com',
+                description: 'Музыкальный стриминговый сервис',
+                category: 'music',
+                tags: ['музыка', 'плейлисты']
+            },
+            {
+                title: 'GitHub',
+                url: 'https://github.com',
+                description: 'Платформа для разработки и хостинга кода',
+                category: 'tools',
+                tags: ['разработка', 'код', 'git']
+            },
+            {
+                title: 'Medium',
+                url: 'https://medium.com',
+                description: 'Платформа для чтения и публикации статей',
+                category: 'articles',
+                tags: ['статьи', 'блоги', 'чтение']
+            },
+            {
+                title: 'Подкаст "Радио-Т"',
+                url: 'https://radio-t.com',
+                description: 'Популярный IT подкаст',
+                category: 'podcasts',
+                tags: ['подкасты', 'IT', 'технологии']
+            }
+        ];
+
+        sampleLinks.forEach(linkData => {
+            this.addLink(linkData);
+        });
+    }
+
+    // ===== TASKS MANAGEMENT =====
+    
+    // Get all tasks
+    getTasks() {
+        if (!this.data.tasks) {
+            this.data.tasks = [];
+        }
+        return this.data.tasks;
+    }
+
+    // Get task by ID
+    getTask(taskId) {
+        const tasks = this.getTasks();
+        return tasks.find(task => task.id === taskId);
+    }
+
+    // Add new task
+    addTask(taskData) {
+        const tasks = this.getTasks();
+        const newTask = {
+            id: this.generateId(),
+            ...taskData,
+            created: new Date().toISOString(),
+            updated: new Date().toISOString()
+        };
+        
+        tasks.push(newTask);
+        this.saveData();
+        return newTask;
+    }
+
+    // Update existing task
+    updateTask(taskId, updateData) {
+        const tasks = this.getTasks();
+        const taskIndex = tasks.findIndex(task => task.id === taskId);
+        
+        if (taskIndex !== -1) {
+            tasks[taskIndex] = {
+                ...tasks[taskIndex],
+                ...updateData,
+                updated: new Date().toISOString()
+            };
+            this.saveData();
+            return tasks[taskIndex];
+        }
+        return null;
+    }
+
+    // Delete task
+    deleteTask(taskId) {
+        const tasks = this.getTasks();
+        const taskIndex = tasks.findIndex(task => task.id === taskId);
+        
+        if (taskIndex !== -1) {
+            const deletedTask = tasks.splice(taskIndex, 1)[0];
+            this.saveData();
+            return deletedTask;
+        }
+        return null;
+    }
+
+    // Get tasks by status
+    getTasksByStatus(status) {
+        const tasks = this.getTasks();
+        return tasks.filter(task => task.status === status);
+    }
+
+    // Get tasks by period
+    getTasksByPeriod(period) {
+        const tasks = this.getTasks();
+        return tasks.filter(task => task.period === period);
+    }
+
+    // Create sample tasks
+    createSampleTasks() {
+        const sampleTasks = [
+            {
+                title: 'Завершить проект',
+                description: 'Доделать последние штрихи в проекте',
+                priority: 'high',
+                status: 'in_progress',
+                period: 'day',
+                deadline: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // завтра
+                tags: ['работа', 'проект']
+            },
+            {
+                title: 'Прочитать книгу',
+                description: 'Дочитать главу о продуктивности',
+                priority: 'medium',
+                status: 'pending',
+                period: 'day',
+                tags: ['обучение', 'книги']
+            },
+            {
+                title: 'Планирование недели',
+                description: 'Составить план на следующую неделю',
+                priority: 'high',
+                status: 'pending',
+                period: 'week',
+                deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // через неделю
+                tags: ['планирование']
+            },
+            {
+                title: 'Тренировка',
+                description: 'Силовая тренировка в зале',
+                priority: 'medium',
+                status: 'completed',
+                period: 'day',
+                tags: ['спорт', 'здоровье']
+            }
+        ];
+
+        sampleTasks.forEach(taskData => {
+            this.addTask(taskData);
+        });
+    }
 }
 
 // Initialize data manager
@@ -1051,12 +1304,12 @@ if (!localStorage.getItem('data_cleared_once')) {
 //     window.dataManager.createSampleData();
 // }
 
-// Create sample tasks if no tasks exist (DISABLED - user wants clean start)
-// if (window.dataManager.getTasks().length === 0) {
-//     window.dataManager.createSampleTasks();
-// }
+// Create sample tasks if no tasks exist
+if (window.dataManager.getTasks().length === 0) {
+    window.dataManager.createSampleTasks();
+}
 
-// Create sample links if no links exist (DISABLED - user wants clean start)
-// if (window.dataManager.getLinks().length === 0) {
-//     window.dataManager.createSampleLinks();
-// }
+// Create sample links if no links exist
+if (window.dataManager.getLinks().length === 0) {
+    window.dataManager.createSampleLinks();
+}

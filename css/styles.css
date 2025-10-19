@@ -3404,50 +3404,59 @@ textarea {
 /* Mobile Responsive for Timer */
 @media (max-width: 768px) {
   .timer {
-    padding: var(--space-md);
-    gap: var(--space-md);
+    padding: var(--space-sm);
+    gap: var(--space-sm);
   }
   
   .timer-display {
-    margin: var(--space-lg) auto;
-    padding: var(--space-md);
-    max-width: 280px;
+    margin: var(--space-md) auto;
+    padding: var(--space-sm);
+    max-width: 220px;
   }
   
   .timer-circle {
-    width: 240px;
-    height: 240px;
+    width: 200px;
+    height: 200px;
   }
   
   .timer-progress {
-    max-width: 240px;
-    max-height: 240px;
+    max-width: 200px;
+    max-height: 200px;
   }
   
   .timer-mode-tabs {
     flex-direction: column;
     width: 100%;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
   }
   
   .timer-tab {
-    padding: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
     text-align: center;
+    font-size: 0.875rem;
   }
   
   .timer-circle svg {
-    width: 240px;
-    height: 240px;
+    width: 200px;
+    height: 200px;
   }
   
   .timer-circle circle {
-    r: 100;
-    cx: 120;
-    cy: 120;
+    r: 85;
+    cx: 100;
+    cy: 100;
   }
   
   .timer-time {
-    font-size: 2.2rem;
+    font-size: 1.9rem;
+  }
+  
+  .timer-status {
+    font-size: 0.875rem;
+  }
+  
+  .timer-cycle {
+    font-size: 0.75rem;
   }
   
   .timer-actions {
@@ -3526,42 +3535,115 @@ textarea {
   
   /* Extra small screens - even more compact timer */
   .timer-display {
-    margin: var(--space-md) auto;
-    padding: var(--space-sm);
-    max-width: 240px;
+    margin: var(--space-sm) auto;
+    padding: var(--space-xs);
+    max-width: 180px;
   }
   
   .timer-circle {
-    width: 200px;
-    height: 200px;
+    width: 160px;
+    height: 160px;
   }
   
   .timer-progress {
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 160px;
+    max-height: 160px;
   }
   
   .timer-circle svg {
-    width: 200px !important;
-    height: 200px !important;
+    width: 160px !important;
+    height: 160px !important;
   }
   
   .timer-circle circle {
-    r: 85 !important;
-    cx: 100 !important;
-    cy: 100 !important;
+    r: 68 !important;
+    cx: 80 !important;
+    cy: 80 !important;
   }
   
   .timer-time {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
   
   .timer-status {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
   }
   
   .timer-cycle {
+    font-size: 0.7rem;
+  }
+}
+
+/* iPhone 14 and similar devices (390px width) */
+@media (max-width: 430px) and (min-height: 800px) {
+  .timer {
+    padding: var(--space-xs);
+    gap: var(--space-xs);
+  }
+  
+  .timer-display {
+    margin: var(--space-xs) auto;
+    padding: var(--space-xs);
+    max-width: 170px;
+  }
+  
+  .timer-circle {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .timer-progress {
+    max-width: 150px;
+    max-height: 150px;
+  }
+  
+  .timer-circle svg {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  
+  .timer-circle circle {
+    r: 63 !important;
+    cx: 75 !important;
+    cy: 75 !important;
+  }
+  
+  .timer-time {
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+  
+  .timer-status {
     font-size: 0.75rem;
+    margin-bottom: 2px;
+  }
+  
+  .timer-cycle {
+    font-size: 0.65rem;
+  }
+  
+  .timer-mode-tabs {
+    margin-bottom: var(--space-sm);
+  }
+  
+  .timer-tab {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.8rem;
+  }
+  
+  .timer-actions {
+    margin: var(--space-sm) 0;
+  }
+  
+  .timer-btn {
+    padding: var(--space-sm);
+    min-height: 48px;
+  }
+  
+  .timer-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-xs);
+    margin: var(--space-sm) 0;
   }
 }
 

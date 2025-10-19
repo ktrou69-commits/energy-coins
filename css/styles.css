@@ -2985,7 +2985,10 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: var(--space-xl) 0;
+  margin: var(--space-xl) auto;
+  padding: var(--space-lg);
+  width: 100%;
+  max-width: 320px;
 }
 
 .timer-circle {
@@ -2993,11 +2996,18 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 280px;
+  height: 280px;
+  margin: 0 auto;
 }
 
 .timer-progress {
   transform: rotate(-90deg);
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  width: 100%;
+  height: 100%;
+  max-width: 280px;
+  max-height: 280px;
 }
 
 .timer-track {
@@ -3398,9 +3408,26 @@ textarea {
     gap: var(--space-md);
   }
   
+  .timer-display {
+    margin: var(--space-lg) auto;
+    padding: var(--space-md);
+    max-width: 280px;
+  }
+  
+  .timer-circle {
+    width: 240px;
+    height: 240px;
+  }
+  
+  .timer-progress {
+    max-width: 240px;
+    max-height: 240px;
+  }
+  
   .timer-mode-tabs {
     flex-direction: column;
     width: 100%;
+    margin-bottom: var(--space-lg);
   }
   
   .timer-tab {
@@ -3420,7 +3447,7 @@ textarea {
   }
   
   .timer-time {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
   }
   
   .timer-actions {
@@ -3495,5 +3522,65 @@ textarea {
   .timer-settings-actions .modal-actions-right {
     width: 100%;
     justify-content: space-between;
+  }
+  
+  /* Extra small screens - even more compact timer */
+  .timer-display {
+    margin: var(--space-md) auto;
+    padding: var(--space-sm);
+    max-width: 240px;
+  }
+  
+  .timer-circle {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .timer-progress {
+    max-width: 200px;
+    max-height: 200px;
+  }
+  
+  .timer-circle svg {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  
+  .timer-circle circle {
+    r: 85 !important;
+    cx: 100 !important;
+    cy: 100 !important;
+  }
+  
+  .timer-time {
+    font-size: 1.8rem;
+  }
+  
+  .timer-status {
+    font-size: 0.875rem;
+  }
+  
+  .timer-cycle {
+    font-size: 0.75rem;
+  }
+}
+
+/* Safari-specific fixes */
+@supports (-webkit-appearance: none) {
+  .timer-progress {
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    -webkit-filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  }
+  
+  .timer-circle {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  .timer-display {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
   }
 }

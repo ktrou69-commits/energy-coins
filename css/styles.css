@@ -629,6 +629,450 @@ body {
   border-left: 4px solid #dc2626;
 }
 
+/* Emoji Oracle */
+.oracle-section {
+  margin: var(--space-xl) 0;
+}
+
+.oracle-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.oracle-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.oracle-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3);
+  opacity: 0.8;
+  animation: oracleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes oracleGlow {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.oracle-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.oracle-emoji-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oracle-emoji {
+  font-size: 3rem;
+  animation: emojiFloat 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes emojiFloat {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-5px) scale(1.05); }
+}
+
+.oracle-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--oracle-color, #3b82f6) 0%, transparent 70%);
+  opacity: 0.3;
+  animation: oraclePulse 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes oraclePulse {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.3;
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.1;
+  }
+}
+
+.oracle-info {
+  flex: 1;
+}
+
+.oracle-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  background: linear-gradient(45deg, var(--oracle-color, #3b82f6), #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.oracle-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.oracle-refresh {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-secondary);
+}
+
+.oracle-refresh:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transform: rotate(360deg) scale(1.1);
+  border-color: var(--oracle-color, #3b82f6);
+}
+
+.oracle-main {
+  margin-bottom: var(--space-lg);
+}
+
+.oracle-mood {
+  text-align: center;
+  margin-bottom: var(--space-md);
+  padding: var(--space-md);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--oracle-color, #3b82f6);
+  position: relative;
+}
+
+.oracle-mood::before {
+  content: '✨';
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  background: var(--bg-card);
+  padding: 0 var(--space-xs);
+  font-size: 1.2rem;
+}
+
+.mood-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+  font-weight: 500;
+}
+
+.mood-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--oracle-color, #3b82f6);
+}
+
+.oracle-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.oracle-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--oracle-color, #3b82f6);
+}
+
+.stat-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.oracle-prediction {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background: linear-gradient(135deg, var(--oracle-color, #3b82f6)15, transparent);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--oracle-color, #3b82f6);
+  position: relative;
+}
+
+.oracle-prediction::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, var(--oracle-color, #3b82f6)10, transparent);
+  border-radius: var(--radius-lg);
+  z-index: -1;
+}
+
+.prediction-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  animation: crystalGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes crystalGlow {
+  0% { filter: brightness(1) drop-shadow(0 0 5px var(--oracle-color, #3b82f6)); }
+  100% { filter: brightness(1.2) drop-shadow(0 0 15px var(--oracle-color, #3b82f6)); }
+}
+
+.prediction-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.oracle-advice {
+  margin-bottom: var(--space-md);
+}
+
+.advice-time {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: rgba(16, 185, 129, 0.1);
+  border-radius: var(--radius);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.advice-icon {
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+.advice-text {
+  font-size: 0.875rem;
+  color: var(--success);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.oracle-activity {
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+  background: rgba(139, 92, 246, 0.1);
+  border-radius: var(--radius);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.activity-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: var(--space-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activity-text {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.oracle-workstyle {
+  text-align: center;
+  padding: var(--space-sm);
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border: 1px dashed var(--oracle-color, #3b82f6);
+}
+
+.workstyle-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Oracle magical effects */
+.oracle-card.new-prediction {
+  animation: oracleReveal 1s ease-out;
+}
+
+@keyframes oracleReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(-5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 767px) {
+  .oracle-card {
+    padding: var(--space-md);
+  }
+  
+  .oracle-header {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-sm);
+  }
+  
+  .oracle-emoji {
+    font-size: 2.5rem;
+  }
+  
+  .oracle-pulse {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .oracle-stats {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  
+  .oracle-prediction {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-xs);
+  }
+  
+  .advice-time {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-xs);
+  }
+}
+
+@media (max-width: 479px) {
+  .oracle-section {
+    margin: var(--space-md) 0;
+  }
+  
+  .oracle-card {
+    padding: var(--space-sm);
+  }
+  
+  .oracle-emoji {
+    font-size: 2rem;
+  }
+  
+  .oracle-title {
+    font-size: 1rem;
+  }
+  
+  .oracle-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .mood-value {
+    font-size: 1rem;
+  }
+  
+  .prediction-text,
+  .advice-text,
+  .activity-text,
+  .workstyle-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* Dynamic color themes for different emojis */
+.oracle-card[data-emoji="🚀"] {
+  --oracle-color: #3b82f6;
+}
+
+.oracle-card[data-emoji="🌱"] {
+  --oracle-color: #10b981;
+}
+
+.oracle-card[data-emoji="⚡"] {
+  --oracle-color: #f59e0b;
+}
+
+.oracle-card[data-emoji="🎯"] {
+  --oracle-color: #ef4444;
+}
+
+.oracle-card[data-emoji="🌟"] {
+  --oracle-color: #8b5cf6;
+}
+
+.oracle-card[data-emoji="🔥"] {
+  --oracle-color: #dc2626;
+}
+
+.oracle-card[data-emoji="🌊"] {
+  --oracle-color: #0ea5e9;
+}
+
+.oracle-card[data-emoji="🏔️"] {
+  --oracle-color: #6b7280;
+}
+
+.oracle-card[data-emoji="🦋"] {
+  --oracle-color: #ec4899;
+}
+
+.oracle-card[data-emoji="🌈"] {
+  --oracle-color: #a855f7;
+}
+
 /* Timeline */
 .timeline-section {
   background: var(--bg-card);

@@ -286,6 +286,11 @@ class EnergyCoinApp {
             // Links manager is already initialized
         }
         
+        // Initialize timer manager (already initialized in timer.js)
+        if (window.timerManager) {
+            // Timer manager is already initialized
+        }
+        
         // Pre-render all sections in background
         setTimeout(() => {
             // Pre-render analytics charts
@@ -323,6 +328,16 @@ class EnergyCoinApp {
                     console.log('Links not ready yet, will render on switch');
                 }
             }
+            
+            // Initialize timer display
+            if (window.timerManager) {
+                try {
+                    window.timerManager.updateDisplay();
+                    window.timerManager.updateStats();
+                } catch (e) {
+                    console.log('Timer not ready yet, will render on switch');
+                }
+            }
         }, 500); // Small delay to ensure DOM is ready
     }
 
@@ -339,7 +354,7 @@ class EnergyCoinApp {
         });
 
         // Show/hide sections immediately
-        document.querySelectorAll('.dashboard, .analytics, .life, .tasks, .links').forEach(el => {
+        document.querySelectorAll('.dashboard, .analytics, .life, .tasks, .links, .timer').forEach(el => {
             el.classList.toggle('hidden', !el.classList.contains(section));
         });
 
@@ -395,6 +410,14 @@ class EnergyCoinApp {
                     if (linksList && !linksList.innerHTML.trim()) {
                         window.linksManager.render();
                     }
+                }
+                break;
+                
+            case 'timer':
+                if (window.timerManager) {
+                    // Timer is always ready, just update display
+                    window.timerManager.updateDisplay();
+                    window.timerManager.updateStats();
                 }
                 break;
                 
